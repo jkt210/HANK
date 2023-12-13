@@ -4,7 +4,7 @@ import numba as nb
 from consav.linear_interp import interp_1d_vec
 
 @nb.njit(parallel=True)        
-def solve_hh_backwards(par,z_trans,r,w0,w1,phi0,phi1,vbeg_a_plus,vbeg_a,a,c,l0,l1,ss=False):
+def solve_hh_backwards(par,z_trans,r,w0,w1,phi0,phi1,vbeg_a_plus,vbeg_a,a,c,u,l0,l1,ss=False):
     """ solve backwards with vbeg_a from previous iteration (here vbeg_a_plus) """
 
     for i_fix in nb.prange(par.Nfix):
@@ -34,6 +34,7 @@ def solve_hh_backwards(par,z_trans,r,w0,w1,phi0,phi1,vbeg_a_plus,vbeg_a,a,c,l0,l
                 a[i_fix,i_z,:] = np.fmax(a[i_fix,i_z,:],0.0) # enforce borrowing constraint
             
             c[i_fix,i_z] = m-a[i_fix,i_z]
+            u[i_fix,i_z] = c[i_fix,i_z]**(1.0-par.sigma)/(1.0-par.sigma)-par.nu
 
         # b. expectation step
         v_a = (1+r)*c[i_fix]**(-par.sigma)
