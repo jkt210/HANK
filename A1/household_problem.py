@@ -13,8 +13,8 @@ def solve_hh_backwards(par,z_trans,r,w0,w1,phi0,phi1,vbeg_a_plus,vbeg_a,a,c,l0,l
         for i_z in nb.prange(par.Nz):
         
             ## i. labor supply
-            l0[i_fix,i_z,:] = par.phi0*par.eta0_grid[i_fix]*par.z_grid[i_z]
-            l1[i_fix,i_z,:] = par.phi1*par.eta1_grid[i_fix]*par.z_grid[i_z]
+            l0[i_fix,i_z,:] = phi0*par.eta0_grid[i_fix]*par.z_grid[i_z]
+            l1[i_fix,i_z,:] = phi1*par.eta1_grid[i_fix]*par.z_grid[i_z]
 
             ## ii. cash-on-hand
             m = (1+r)*par.a_grid + par.z_grid[i_z]*(w0*l0[i_fix,i_z,:]) + par.z_grid[i_z]*(w1*l1[i_fix,i_z,:])
